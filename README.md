@@ -6,6 +6,7 @@ This is a minimal **App Router** Next.js project (JavaScript, no TypeScript) tha
 - **NOT** redirecting if:
   - `device-memory` Client Hint is **> 10 GB** (when available)
   - a cookie `prefer_desktop=1` is set (manual toggle or client-side GPU check)
+  - the request looks like **desktop DevTools device emulation / UA override** (mobile UA but desktop Client Hints)
 
 ## 1) Install & run
 

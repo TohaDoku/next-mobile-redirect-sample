@@ -13,6 +13,33 @@ function isMobileUA(ua = '') {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
 }
 
+function normalizeCHValue(v = '') {
+  // Client Hint headers often wrap values in quotes.
+  return String(v).trim().replace(/^"|"$/g, '');
+}
+
+function isDesktopPlatformCH(platform = '') {
+  const p = normalizeCHValue(platform).toLowerCase();
+  // Common desktop platforms in Sec-CH-UA-Platform
+  return p === 'windows' || p === 'macos' || p === 'linux' || p === 'chrome os';
+}
+
+function isLikelyDevtoolsEmulation(req, ua) {
+  // In Chrome DevTools, changing UA to a mobile string often does NOT change
+  // Sec-CH-UA-Platform (it stays "Windows"/"macOS"), so we can avoid redirecting.
+  const chPlatform = req.headers.get('sec-ch-ua-platform') || '';
+  const chMobile = req.headers.get('sec-ch-ua-mobile') || '';
+
+  // If UA looks mobile, but CH platform says desktop, treat it as emulation.
+  if (isMobileUA(ua) && isDesktopPlatformCH(chPlatform)) return true;
+
+  // Another heuristic: UA says mobile, but CH says explicitly not mobile.
+  // (Rare, but can happen depending on override settings.)
+  if (isMobileUA(ua) && normalizeCHValue(chMobile) === '?0') return true;
+
+  return false;
+}
+
 export function middleware(req) {
   const url = req.nextUrl.clone();
   const host = (req.headers.get('host') || '').toLowerCase();
@@ -50,6 +77,11 @@ export function middleware(req) {
   // If user/device is pinned to desktop -> no redirect
   const preferDesktop = req.cookies.get('prefer_desktop')?.value === '1';
   if (preferDesktop) return NextResponse.next();
+
+  // IMPORTANT:
+  // If the site is opened on a desktop in DevTools device mode / UA override,
+  // we should keep the desktop domain.
+  if (isLikelyDevtoolsEmulation(req, ua)) return NextResponse.next();
 
   // Device memory Client Hint: often available in Chromium as `device-memory`.
   // Not available on many browsers (e.g. iOS Safari).
