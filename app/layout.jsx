@@ -1,13 +1,18 @@
 import Script from "next/script";
 import DomainViewProvider from "./DomainViewProvider";
 import "./globals.css";
-import MainBlockSeo from "./ui/MainBlockSeo/MainBlockSeo";
+import { Play } from 'next/font/google';
 
 export const metadata = {
   title: "Репетиторство в любом ВУЗе",
   description:
     "Подбор репетитора под ваш ВУЗ и дисциплину. Быстрая заявка — перезвоним и подберём преподавателя.",
 };
+
+export const play = Play({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
 
 export default function RootLayout({ children }) {
   return (
@@ -42,7 +47,7 @@ ym(106415263, 'init', {
         />
       </head>
 
-      <body>
+      <body className={`${play}`}>
         {/* Провайдер решает: показывать SEO или White */}
         <DomainViewProvider>{children}</DomainViewProvider>
 
