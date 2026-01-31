@@ -1,0 +1,87 @@
+.nav {
+    display: flex;
+    gap: 25px;
+    position: relative;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.nav-link {
+    font-size: 14px;
+    color: var(--black);
+    transition: opacity ease .3s;
+}
+
+.nav-link:hover {
+    opacity: .7;
+    transition: opacity ease .3s;
+}
+
+@media (max-width: 1194px) {
+    .nav {
+        display: none;
+    }
+}
+
+.nav-link-dropdown {
+    position: relative;
+}
+
+.hover-spacer {
+    position: absolute;
+    top: 100%; /* Находится под .nav-link */
+    left: 0;
+    width: 100%; /* Совпадает по ширине с родительским элементом */
+    height: 15px; /* Высота для заполнения промежутка */
+    background-color: transparent; /* Невидимый */
+    z-index: 5; /* Чтобы не перекрывался другими элементами */
+}
+
+.nav-spacer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 70px; /* Пространство между ссылкой и выпадающим меню */
+    width: 100px;
+    background-color: transparent; /* Невидимый */
+    z-index: 5;
+
+}
+
+.dropdown {
+    position: absolute;
+    min-width: 180px;
+    top: 200%;
+    left: 0;
+    background-color: var(--white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    padding: 15px;
+    z-index: 10;
+}
+
+.about-dropdown, .about-nav-spacer {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dropdown-link {
+    display: block;
+    text-decoration: none;
+    color: var(--black);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+}
+
+.dropdown-link:hover {
+    background-color: var(--page-bg);
+    color: var(--blue);
+}
+
+.dropdown-inner {
+    display: flex;
+    gap: 10px;
+}

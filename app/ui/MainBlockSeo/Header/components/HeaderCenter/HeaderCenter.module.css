@@ -1,0 +1,60 @@
+.headerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.phoneCallSpan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phoneCallSpan p {
+  color: var(--grey-3);
+}
+
+.phoneCall {
+  font-weight: bold;
+  font-size: 22px;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color ease .3s;
+}
+
+.phoneCall:hover {
+  color: var(--blue);
+  transition: color ease .3s;
+}
+
+/* была ошибка: отсутствовали px */
+@media (max-width: 1052px) {
+  .phoneCallSpan {
+    display: none;
+  }
+}
+
+.callBtn {
+    background-color: var(--accent);
+    padding: 16px 36px;
+    color: var(--text);
+    border-radius: 10px;
+    transition: background-color ease .3s;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.callBtn:hover {
+    background: var(--accent-hover);
+    transition: background-color ease .3s;
+}
+
+/* скрываем кнопку на планшетах/мобильных */
+@media (max-width: 805px) {
+  .callBtn {
+    display: none;
+  }
+}

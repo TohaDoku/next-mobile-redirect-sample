@@ -1,5 +1,7 @@
 import Script from "next/script";
-import DomainRedirectGate from "./DomainRedirectGate";
+import DomainViewProvider from "./DomainViewProvider";
+import "./globals.css";
+import MainBlockSeo from "./ui/MainBlockSeo/MainBlockSeo";
 
 export const metadata = {
   title: "Репетиторство в любом ВУЗе",
@@ -40,17 +42,21 @@ ym(106415263, 'init', {
         />
       </head>
 
-      <body
-        style={{
-          fontFamily:
-            "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
-          margin: 0,
-          color: "#0f172a",
-          background:
-            "radial-gradient(1200px 700px at 20% 10%, rgba(56,189,248,.18), transparent 60%), radial-gradient(1000px 600px at 80% 0%, rgba(99,102,241,.16), transparent 55%), #ffffff",
-        }}
-      >
-        <DomainRedirectGate /> 
+      <body>
+        <MainBlockSeo
+          title={"Скидка до −50% 🔥\n + кэшбэк 5%"}
+          description={"✅ Не для всех: работаем именно с вашим профилем\n🔑 Закрываем конкретную боль: консультируем «под ключ»\n🔥 Бросаем вызов: вернем деньги если не будет достигнут результат или попросите возврат"}
+          btn="Получить помощь"
+          img="/hero/2.png"
+          width={400}
+          height={648}
+          modal={true}
+          whiteText={true}
+          classStyle={'seo_style'}
+          vyz={'МТИ МОНОБЛОК'}
+        />
+        {/* Провайдер решает: показывать SEO или White */}
+        <DomainViewProvider>{children}</DomainViewProvider>
 
         <noscript>
           <div>
@@ -61,16 +67,6 @@ ym(106415263, 'init', {
             />
           </div>
         </noscript>
-
-        <div
-          style={{
-            padding: "24px",
-            maxWidth: 1100,
-            margin: "0 auto",
-          }}
-        >
-          {children}
-        </div>
       </body>
     </html>
   );

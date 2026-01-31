@@ -1,0 +1,358 @@
+.header {
+  padding-top: 10px;
+  z-index: 999;
+  width: 100%;
+}
+
+/* Лёгкий blur и полупрозрачный фон */
+.headerContainer {
+  background: var(--white);
+  border-radius: 15px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Верхняя линия */
+.headerFirst {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--grey-1);
+  padding: 5px 16px;
+}
+
+.firstNav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.firstA {
+  color: var(--blue);
+  transition: all ease 0.2s;
+}
+
+.firstA:hover {
+  opacity: 0.7;
+}
+
+/* Телефон */
+.phoneCallSpan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phoneCallSpan p {
+  color: var(--grey-3);
+  font-size: 12px;
+}
+
+.phoneCall {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color ease 0.3s;
+}
+
+.phoneCall:hover {
+  color: var(--blue);
+}
+
+/* Вторая линия */
+.headerSecond {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 16px 8px;
+  gap: 12px;
+}
+
+.secondNavWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.secondNav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.secondA {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: var(--grey-1);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 16px;
+  transition: background-color ease 0.3s, transform ease 0.2s;
+}
+
+.secondA:hover {
+  background: var(--grey-2);
+  transform: translateY(-1px);
+}
+
+/* Кнопка звонка (desktop) */
+.callBtn {
+  padding: 8px 16px;
+  background-color: var(--accent);
+  color: var(--black);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  transition: background-color ease 0.3s, transform ease 0.2s;
+}
+
+.callBtn:hover {
+  background-color: #ffd800;
+  transform: translateY(-1px);
+}
+
+/* ===== Мобильное меню ===== */
+
+.headerMobileMenu {
+  display: none;
+}
+
+.mobileMenuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--grey-2);
+  background: var(--accent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-size: 22px;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.mobileMenuButton:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+/* Оверлей */
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 998;
+}
+
+.mobileMenuOverlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Панель меню */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: var(--white);
+  box-shadow: -8px 0 24px rgba(15, 23, 42, 0.22);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 12px;
+}
+
+.mobileMenuOpen {
+  transform: translateX(0);
+}
+
+.mobileMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--grey-1);
+}
+
+.mobileMenuClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--grey-2);
+  background: var(--accent);
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.mobileMenuClose:hover {
+  background: var(--accent-hovers);
+  transform: translateY(-1px);
+}
+
+.mobileMenuBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 2px 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobileMenuSection {
+  padding: 8px;
+  border-bottom: 1px dashed var(--grey-1);
+  border-radius: 10px;
+}
+
+.mobileMenuSection:last-child {
+  border-bottom: none;
+}
+
+.mobileSectionTitle {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--grey-3);
+  margin-bottom: 6px;
+}
+
+.mobileNavList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileNavList li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text);
+  text-decoration: none;
+  padding: 6px 0;
+  border-radius: 8px;
+  transition: background 0.2s ease, padding-left 0.2s ease, color 0.2s ease;
+}
+
+.mobileNavList li a svg {
+  font-size: 18px;
+}
+
+.mobileNavList li a:hover {
+  background: var(--grey-1);
+  padding-left: 4px;
+  color: var(--blue);
+}
+
+/* Телефон в мобильном меню */
+.mobilePhoneCall {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  text-decoration: none;
+  margin-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.mobilePhoneCall:hover {
+  color: var(--blue);
+}
+
+.mobilePhoneNote {
+  font-size: 12px;
+  color: var(--grey-3);
+  margin-bottom: 8px;
+}
+
+/* Тема + логин */
+.mobileThemeToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--grey-3);
+}
+
+.mobileMenuFooter {
+  padding-top: 8px;
+  border-top: 1px solid var(--grey-1);
+}
+
+.mobileCallBtn {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--accent);
+  color: var(--black);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  transition: background-color ease 0.3s, transform ease 0.2s;
+}
+
+.mobileCallBtn:hover {
+  background-color: #ffd800;
+  transform: translateY(-1px);
+}
+
+/* ===== Адаптив ===== */
+
+@media (max-width: 1100px) {
+  .callBtn {
+    display: none;
+  }
+
+  .phoneCallSpan {
+    display: none;
+  }
+}
+
+@media (max-width: 936px) {
+  .headerFirst,
+  .secondNavWrapper {
+    display: none;
+  }
+
+  .headerSecond {
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+
+  .headerMobileMenu {
+    display: block;
+  }
+}
+
+@media (max-width: 748px) {
+  .socialSpacer {
+    display: none;
+  }
+}

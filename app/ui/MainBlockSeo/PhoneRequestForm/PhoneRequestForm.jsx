@@ -1,0 +1,242 @@
+"use client";
+
+import { useEffect, useRef, useState, useCallback } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import styles from "./PhoneRequestForm.module.css";
+import HeaderSocial from "../Header/components/HeaderSocial/HeaderSocial";
+
+const YM_ID = 106415263;
+
+// ждём ym, чтобы не терять цели при ранних кликах
+function waitForYm(timeoutMs = 1500) {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(false);
+    if (typeof window.ym === "function") return resolve(true);
+
+    const started = Date.now();
+    const tick = () => {
+      if (typeof window.ym === "function") return resolve(true);
+      if (Date.now() - started >= timeoutMs) return resolve(false);
+      setTimeout(tick, 50);
+    };
+    tick();
+  });
+}
+
+async function reachGoal(goalName, params) {
+  try {
+    if (typeof window === "undefined") return false;
+
+    const ok = await waitForYm();
+    if (!ok || typeof window.ym !== "function") return false;
+
+    // goalName = 'tel_input' | 'open_form_click' | 'form_submit' ...
+    window.ym(YM_ID, "reachGoal", goalName, params || {});
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export default function PhoneRequestForm({ buttonText, vuz }) {
+  const [phone, setPhone] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const [page, setPage] = useState("");
+  const [utm, setUtm] = useState(null);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  // чтобы tel_input стрелял 1 раз на одно "валидное заполнение"
+  const telSent = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // если хочешь именно текущий url, а не origin:
+    // setPage(window.location.href);
+    setPage(window.location.href);
+
+    try {
+      const raw = localStorage.getItem("utm_data");
+      if (raw) setUtm(JSON.parse(raw));
+    } catch (e) {
+      console.error("Ошибка чтения utm_data из localStorage", e);
+    }
+  }, []);
+
+  const validatePhone = useCallback((value) => {
+    // value типа "79991234567" или "+7..." — чистим до цифр
+    return String(value || "").replace(/\D/g, "").length >= 11;
+  }, []);
+
+  const handleBtnClick = useCallback(async () => {
+    if (isSubmitting) return;
+
+    // ✅ Нажал кнопку “Получить помощь”
+    reachGoal("open_form_click");
+
+    if (!phone.trim() || !validatePhone(phone)) {
+      setIsInvalid(true);
+      return;
+    }
+
+    setIsInvalid(false);
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    const payload = {
+      phone,
+      page,
+      vuz: vuz || null,
+      utm_source: utm?.utm_source || null,
+      utm_medium: utm?.utm_medium || null,
+      utm_campaign: utm?.utm_campaign || null,
+    };
+
+    try {
+      const res = await fetch(
+        `https://nikolskypomosh.ru/api/service-request-phone/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        let msg = "Не удалось отправить номер. Попробуйте ещё раз.";
+        try {
+          const data = await res.json();
+          if (data?.detail) msg = data.detail;
+          if (data?.message) msg = data.message;
+        } catch {}
+        throw new Error(msg);
+      }
+
+      // ✅ Отправил форму
+      reachGoal("form_submit");
+
+      // успех
+      setIsSent(true);
+      setPhone("");
+      telSent.current = false; // чтобы при новом заполнении снова отработал tel_input
+    } catch (e) {
+      setSubmitError(e?.message || "Ошибка отправки. Попробуйте ещё раз.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [isSubmitting, phone, page, vuz, utm, validatePhone]);
+
+  // экран успеха
+  if (isSent) {
+    return (
+      <div className={styles.form}>
+        <div className={styles.container}>
+          <h4 className={styles.h4}>✅ Номер успешно отправлен</h4>
+          <p className={styles.smallText}>
+            Менеджер свяжется с вами в ближайшее время.
+          </p>
+
+          <button
+            className="btn--warning"
+            onClick={() => {
+              setIsSent(false);
+              setSubmitError("");
+              setIsInvalid(false);
+            }}
+          >
+            Отправить ещё раз
+          </button>
+
+          <span className={styles.headerSocial}>
+            <HeaderSocial header={""} />
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className={styles.form}>
+        <div className={styles.container}>
+          <h4 className={styles.h4}>🔥 Оставьте заявку</h4>
+
+          <PhoneInput
+            country={"ru"}
+            onlyCountries={["ru", "kz", "by", "uz", "am", "kg", "ge"]}
+            preferredCountries={["ru"]}
+            value={phone}
+            onChange={(value) => {
+              setPhone(value);
+              setIsInvalid(false);
+              setSubmitError("");
+
+              // ✅ Заполнил номер телефона (один раз, когда номер стал валидным)
+              const ok = validatePhone(value);
+              if (ok && !telSent.current) {
+                telSent.current = true;
+                reachGoal("tel_input");
+              }
+
+              // если снова стал невалидным — разрешаем стрельнуть ещё раз при следующей валидности
+              if (!ok) telSent.current = false;
+            }}
+            inputClass={`${styles.phoneInput} ${
+              isInvalid ? styles.phoneInputError : ""
+            }`}
+            containerClass={styles.phoneContainer}
+            buttonClass={styles.flagDropdown}
+            dropdownClass={styles.countryList}
+            localization={{
+              ru: "Россия",
+              kz: "Казахстан",
+              by: "Беларусь",
+              uz: "Узбекистан",
+              am: "Армения",
+              kg: "Киргизия",
+              ge: "Грузия",
+            }}
+          />
+
+          <button
+            className={styles.btnWarning}
+            onClick={handleBtnClick}
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+          >
+            {isSubmitting ? "Отправляем…" : buttonText || "Получить помощь"}
+          </button>
+
+          <p className={styles.smallText}>
+            Нажимая на кнопку, вы подтверждаете ваше согласие c{" "}
+            <a
+              className={styles.textLink}
+              href="/docs/Пользовательское_соглашение_Оферта_Никольский_Помощь (2).pdf"
+              download
+            >
+              условиями передачи информации
+            </a>
+          </p>
+        </div>
+
+        {isInvalid && (
+          <p className={styles.errorMessage}>Введите корректный номер телефона</p>
+        )}
+
+        {!!submitError && (
+          <p className={styles.errorMessage}>{submitError}</p>
+        )}
+      </div>
+
+      <span className={styles.headerSocial}>
+        <h2 className={styles.h44}>Или напишите уже сейчас</h2>
+        <HeaderSocial header={""} />
+      </span>
+    </>
+  );
+}

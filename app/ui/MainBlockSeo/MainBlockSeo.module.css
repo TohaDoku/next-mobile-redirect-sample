@@ -1,0 +1,175 @@
+.mainSection {
+  min-height: 80vh;
+  padding-bottom: 10px;
+}
+
+.mainSectionInner {
+  text-align: center;
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--white);
+  border-radius: 15px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  padding: 15px;
+  gap: 20px;
+}
+
+.reviewsBlock{
+  width: 100%;
+}
+.textBlock {
+  width: calc(55% - 20px);
+}
+.imgBlock {
+  max-width: 45%;
+  background: var(--btn--primary-hover);
+  border-radius: 15px;
+}
+.mainSectionInnerTitle {
+  text-align: left;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 1.2;
+}
+.mainSectionInnerTitle2 {
+  text-align: left;
+  font-weight: normal;
+}
+.mainSectionInnerP {
+  text-align: left;
+  font-size: 18px;
+  padding-top: 20px;
+  line-height: 1.2;
+}
+
+/* Контейнер изображения */
+.imgBlock {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin-top: 48px;
+  width: 100%;
+  min-height: 550px;
+}
+
+.mainSectionInnerImg {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vuzImage {
+  position: absolute;
+  right: 29%;
+  bottom: 22%;
+  z-index: 100;
+  width: 18.5%;
+  height: 35%;
+  border-radius: 5%;
+  transform: rotateX(17deg) rotateY(35deg);
+  background: var(--grey);
+}
+.reviewsBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.review {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.review img {
+  border-radius: 5px;
+}
+.advantages {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-top: 15px;
+}
+.advantage {
+  padding: 5px 10px;
+  border: 2px var(--accent) solid;
+  border-radius: 8px;
+  font-size: 20px;
+}
+
+@media (max-width: 936px) {
+  .mainSection {
+    
+    padding-bottom: 10px;
+  }
+}
+
+  @media (max-width: 1278px) {
+    .advantages {
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+  }
+  @media (max-width: 1040px) {
+    .mainSectionInner {
+      text-align: center;
+      margin: 10px 0;
+      display: block;
+    }
+    .textBlock {
+      width: 100%;
+    }
+    .imgBlock {
+      max-width: 100%;
+    }
+    .review {
+      flex-direction: column;
+      font-size: 16px;
+    }
+    .advantages {
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .fadeBottom::after {
+      bottom: 0;
+      height: 25%; /* можно менять */
+    }
+  }
+
+  /* Медиазапросы (если необходимо) */
+  @media (max-width: 768px) {
+    /* Можно добавить адаптивные стили, если нужно */
+    .mainSectionInner {
+      text-align: center;
+      margin: 10px 0;
+      display: block;
+    }
+    .textBlock {
+      width: 100%;
+    }
+    .imgBlock {
+      max-width: 100%;
+    }
+    .review {
+      flex-direction: column;
+      font-size: 16px;
+    }
+    .advantages {
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .fadeBottom::after {
+      bottom: 0;
+      height: 25%; /* можно менять */
+    }
+  }

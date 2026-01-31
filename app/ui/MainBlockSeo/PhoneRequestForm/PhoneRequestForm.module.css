@@ -1,0 +1,133 @@
+.form {
+ display: flex;
+ margin: 0 auto;
+  gap: 15px;
+}
+
+.container {
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+}
+
+.errorMessage {
+ color: #e53935;
+ font-size: 14px;
+ margin-top: 4px;
+ text-align: center;
+}
+
+.smallText {
+ text-align: left;
+ color: grey;
+ font-size: 11px;
+}
+
+.textLink {
+ color: #1976d2;
+ text-decoration: underline;
+}
+
+/* кастомные классы для react-phone-input-2 */
+.phoneContainer {
+ font-family: 'Roboto', sans-serif;
+}
+
+.phoneInput {
+ width: 100% !important;
+ min-width: 250px;
+ height: 56px !important;
+ padding: 12px 14px 12px 58px !important;
+ border: 1px solid #ccc !important;
+ border-radius: 8px !important;
+ font-size: 16px !important;
+ transition: border-color 0.2s;
+ outline: none;
+ background-color: var(--white) !important;
+ color: var(--black);
+ box-sizing: border-box;
+}
+
+.phoneInput:focus {
+ border-color: #1976d2 !important;
+}
+
+.phoneInputError {
+ border: 1px solid #e53935 !important;
+ background-color: var(--white) !important;
+}
+
+.flagDropdown {
+ border: none !important;
+ border-radius: 8px 0 0 8px;
+ background-color: transparent !important;
+}
+
+.selectedFlag {
+ padding-left: 12px;
+ padding-right: 10px;
+}
+
+.countryList {
+ border-radius: 8px;
+ font-size: 14px;
+}
+
+.countryHover:hover {
+ background: var(--bg-elev) !important;
+}
+
+
+
+.h2 {
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.h4 {
+  font-size: 20px;
+  margin: 0;
+  text-align: left;
+  padding-top: 20px;
+}
+
+.h44 {
+  font-size: 20px;
+  margin: 0;
+  text-align: left;
+  padding: 0;
+}
+
+.btnWarning {
+    background-color: var(--accent);
+    padding: 16px 36px;
+    color: var(--text);
+    border-radius: 10px;
+    transition: background-color ease .3s;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.btnWarning:hover {
+    background: var(--accent-hover);
+    transition: background-color ease .3s;
+} 
+
+@media (max-width: 1052px) {
+ .form {
+   width: 100%;
+ }
+
+ .container {
+   flex-direction: column;
+ }
+}
+
+@media (max-width: 1014px) {
+ .form {
+   flex-direction: column;
+ }
+}

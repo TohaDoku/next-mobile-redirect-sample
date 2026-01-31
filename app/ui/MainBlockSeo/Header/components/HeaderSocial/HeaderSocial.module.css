@@ -1,0 +1,71 @@
+.socialServices {
+  display: flex;
+  gap: 10px;
+  
+}
+.socialWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;justify-content: center;
+}
+
+/* общий стиль для иконок внутри блока соцсетей */
+.socialServices a {
+    font-size: 54px;
+    border-radius: 8px;
+    transition: all ease .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 92px;
+  }
+  .socialServicesMax img {
+    width: 54px;
+    height: 54px;
+  }
+
+.socialServicesTg {
+  color: #0088CC;
+  border: 2px dashed #0088CC;
+}
+
+.socialServicesWa {
+  color: #2cb742;
+  border: 2px dashed #2cb742;
+}
+
+.socialServicesVk {
+  color: #0077ff;
+  border: 2px dashed #0077ff;
+}
+.socialServicesMax {
+  color: #8C34DA;
+  border: 2px dashed #8C34DA;
+}
+.socialServicesMax:hover {
+  color: #fff;
+  background: #8C34DA;
+  border: 2px dashed #8C34DA;
+  transition: all ease .3s;
+}
+.socialServicesTg:hover {
+  color: #fff;
+  background: #0088CC;
+  border: 2px dashed #0088CC;
+  transition: all ease .3s;
+}
+
+.socialServicesWa:hover {
+  color: #fff;
+  background: #2cb742;
+  border: 2px dashed #2cb742;
+  transition: all ease .3s;
+}
+
+.socialServicesVk:hover {
+  color: #fff;
+  background: #0077ff;
+  border: 2px dashed #0077ff;
+  transition: all ease .3s;
+}
