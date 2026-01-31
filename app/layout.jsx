@@ -48,7 +48,7 @@ ym(106415263, 'init', {
       </head>
 
       <body className={`${play}`} >
-        {/* Провайдер решает: показывать SEO или White */}
+        
         <DomainViewProvider>{children}</DomainViewProvider>
 
         <noscript>
