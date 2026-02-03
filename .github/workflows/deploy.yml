@@ -4,34 +4,58 @@ on:
   push:
     branches:
       - main
+      - rsya
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Setup SSH for main
+        if: github.ref == 'refs/heads/main'
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Setup SSH for rsya
+        if: github.ref == 'refs/heads/rsya'
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_RSYA }}
+
       - name: Add server to known hosts
         run: |
-          ssh-keyscan -H ${{ secrets.SSH_HOST_MAIN }} >> ~/.ssh/known_hosts
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            HOST="${{ secrets.SSH_HOST_MAIN }}"
+          else
+            HOST="${{ secrets.SSH_HOST_RSYA }}"
+          fi
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         id: deploy
         run: |
           set -e
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_MAIN }} << EOF
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            HOST="${{ secrets.SSH_HOST_MAIN }}"
+            USER="${{ secrets.SSH_USER }}"
+            PROJECT_DIR="/var/www/nikolskij-help.ru"
+            PM2_APP="my-app"
+          else
+            HOST="${{ secrets.SSH_HOST_RSYA }}"
+            USER="${{ secrets.SSH_USER }}"
+            PROJECT_DIR="/var/www/plus-nikolskii-pomosh"
+            PM2_APP="plus-nikolskii-pomosh"
+          fi
+          ssh $USER@$HOST << EOF
             set -e
             export NVM_DIR="\$HOME/.nvm"
             [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
             [ -s "\$HOME/.profile" ] && \. "\$HOME/.profile"
-            cd /var/www/nikolskij-help.ru
+            cd $PROJECT_DIR
             PREVIOUS_COMMIT=\$(git rev-parse HEAD)
             git reset --hard HEAD
             git pull
@@ -43,22 +67,32 @@ jobs:
               git reset --hard \$PREVIOUS_COMMIT
               exit 1
             fi
-            pm2 restart my-app
+            pm2 restart $PM2_APP
           EOF
         continue-on-error: true
 
       - name: Send success notification
         if: steps.deploy.outcome == 'success'
         run: |
-          curl -H "Title: Deploy Success - main" \
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            BRANCH="main"
+          else
+            BRANCH="rsya"
+          fi
+          curl -H "Title: Deploy Success - $BRANCH" \
                -H "Priority: default" \
-               -d "Deployment to main branch completed successfully" \
+               -d "Deployment to $BRANCH branch completed successfully" \
                "https://ntfy.sh/${{ secrets.NTFY_SUCCESS_TOPIC }}"
 
       - name: Send error notification
         if: steps.deploy.outcome == 'failure'
         run: |
-          curl -H "Title: Deploy Failed - main" \
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            BRANCH="main"
+          else
+            BRANCH="rsya"
+          fi
+          curl -H "Title: Deploy Failed - $BRANCH" \
                -H "Priority: urgent" \
-               -d "Deployment to main branch failed. Check GitHub Actions logs for details..." \
+               -d "Deployment to $BRANCH branch failed. Check GitHub Actions logs for details..." \
                "https://ntfy.sh/${{ secrets.NTFY_ERROR_TOPIC }}"
