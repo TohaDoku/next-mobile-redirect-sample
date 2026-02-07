@@ -277,11 +277,11 @@ export default function DomainViewProvider({ children }) {
     }
 
     // --- Яндекс.Браузер всегда ПК ---
-    if (isYandexBrowser(ua)) {
-      reasons.push("YandexBrowser detected => show WHITE");
-      finalize("white", "yandex_keep_white");
-      return;
-    }
+    // if (isYandexBrowser(ua)) {
+    //   reasons.push("YandexBrowser detected => show WHITE");
+    //   finalize("white", "yandex_keep_white");
+    //   return;
+    // }
 
     // --- любой десктоп (включая DevTools device toolbar) ---
     if (isDesktopPlatform(platform, ua)) {
