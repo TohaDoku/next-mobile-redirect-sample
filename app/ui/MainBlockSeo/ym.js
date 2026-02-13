@@ -1,4 +1,4 @@
-export const YM_ID = 106415263;
+export const YM_ID = 106626466;
 
 function waitForYm(timeoutMs = 1500) {
   return new Promise((resolve) => {

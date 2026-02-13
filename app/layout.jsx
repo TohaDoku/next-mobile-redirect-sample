@@ -30,9 +30,9 @@ export default function RootLayout({ children }) {
     if (document.scripts[j].src === r) { return; }
   }
   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a);
-})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106415263', 'ym');
+})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106626466', 'ym');
 
-ym(106415263, 'init', {
+ym(106626466, 'init', {
   ssr:true,
   webvisor:true,
   clickmap:true,
@@ -54,7 +54,7 @@ ym(106415263, 'init', {
         <noscript>
           <div>
             <img
-              src="https://mc.yandex.ru/watch/106415263"
+              src="https://mc.yandex.ru/watch/106626466"
               style={{ position: "absolute", left: "-9999px" }}
               alt=""
             />
